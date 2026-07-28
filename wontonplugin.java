@@ -1,4 +1,4 @@
-package com.example.friendplugin;
+package com.example.wontonplugin;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class FriendPlugin extends JavaPlugin implements CommandExecutor {
+public class WontonPlugin extends JavaPlugin implements CommandExecutor {
 
     // Store friends list for each player in memory using their Minecraft UUID
     private final Map<UUID, List<String>> friendsData = new HashMap<>();
@@ -59,7 +59,8 @@ public class FriendPlugin extends JavaPlugin implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Usage: /friend add <username>");
                     return true;
                 }
-                String targetAdd = args[1];
+                String targetAdd = args[1].toLowerCase(); // Lowercase to prevent duplicates
+                
                 if (targetAdd.equalsIgnoreCase(player.getName())) {
                     player.sendMessage(ChatColor.RED + "You cannot add yourself as a friend!");
                     return true;
@@ -77,8 +78,9 @@ public class FriendPlugin extends JavaPlugin implements CommandExecutor {
                 if (friends.isEmpty()) {
                     player.sendMessage(ChatColor.YELLOW + "Your friends list is empty.");
                 } else {
+                    player.sendMessage(ChatColor.YELLOW + "Your Friends:");
                     for (String friendName : friends) {
-                        player.sendMessage(ChatColor.WHITE + friendName);
+                        player.sendMessage(ChatColor.WHITE + "- " + friendName);
                     }
                 }
                 break;
@@ -89,7 +91,8 @@ public class FriendPlugin extends JavaPlugin implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Usage: /friend remove <username>");
                     return true;
                 }
-                String targetRemove = args[1];
+                String targetRemove = args[1].toLowerCase();
+                
                 if (friends.contains(targetRemove)) {
                     friends.remove(targetRemove);
                     player.sendMessage(ChatColor.GREEN + "Removed " + targetRemove + " from your friends list.");
